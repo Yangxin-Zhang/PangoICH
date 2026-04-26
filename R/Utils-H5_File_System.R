@@ -53,3 +53,43 @@ Extract_Spatial_From_H5ad_Pango <- function(H5ad_Path)
   return(spatial_dt)
 
 }
+
+#' @export
+
+Extract_X_From_H5_10X_Pango <- function(H510X_Path)
+  {
+
+  on.exit({
+    rm(X)
+    gc()
+  })
+
+  X <- Read10X_h5(H510X_Path)
+
+  return(X)
+
+}
+
+#' @export
+
+Extract_Spatial_Matrix_Pango <- function(Spatial_Matrix_Path)
+  {
+
+  on.exit({
+    rm(sp_mat,
+       spatial_dt)
+    gc()
+  })
+
+  sp_mat <- Read10X_Coordinates(filename = Spatial_Matrix_Path,
+                                filter.matrix = TRUE)
+
+  spatial_dt <- data.table(barcode = rownames(sp_mat),
+                           raw_x = sp_mat[,"imagerow"],
+                           raw_y = sp_mat[,"imagecol"],
+                           x = sp_mat[,"row"],
+                           y = sp_mat[,"col"])
+
+  return(spatial_dt)
+
+}
